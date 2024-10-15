@@ -33,5 +33,7 @@ public class User {
     private providers provider=providers.SELF;
     private String providerUserId;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
-    public List<Contact> contacts=new ArrayList<>();
+    private List<Contact> contacts=new ArrayList<>();
+
+
 }

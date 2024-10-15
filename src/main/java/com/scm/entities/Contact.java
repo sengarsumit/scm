@@ -2,6 +2,9 @@ package com.scm.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 public class Contact {
@@ -22,5 +25,7 @@ public class Contact {
     private User user;
 
     // private List<String> socialLinks=new ArrayList<>();
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<SocialLink> links = new ArrayList<>();
 
 }
