@@ -1,14 +1,19 @@
 package com.scm.controller;
+import com.scm.entities.User;
+import com.scm.forms.UserForm;
+import com.scm.services.UserService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PageController {
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("/home")
     public String home(Model model)
     {
@@ -41,9 +46,31 @@ public class PageController {
         return new String("login");
     }
     @GetMapping("/register")
-    public String register()
+    public String register(Model model)
     {
-        return new String("register");
+        UserForm userForm = new UserForm();
+        model.addAttribute("userForm", userForm);
+        return "register";
+    }
+
+    //register
+    @RequestMapping(value = "/do-register",method = RequestMethod.POST)
+    public String processRegister(@ModelAttribute UserForm userForm, HttpSession session)
+    {
+
+//        User user=User.builder().name(userForm.getName()).email(userForm.getEmail()).password(userForm.getPassword()).about(userForm.getAbout()).phoneNumber(userForm.getPhoneNumber()).profilePic("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png").build();
+        User user=new User();
+        user.setName(userForm.getName());
+        user.setPassword(userForm.getPassword());
+        user.setEmail(userForm.getEmail());
+        user.setPhoneNumber(userForm.getPhoneNumber());
+        user.setAbout(userForm.getAbout());
+        user.setProfilePic("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
+
+        userService.saveUser(user);
+        System.out.println("user saved");
+        session.setAttribute("message","Registration successful");
+        return "redirect:register";
     }
 
 }

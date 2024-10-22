@@ -30,6 +30,7 @@ public class User {
     private boolean phoneVerified=false;
 
     //self,Oauth
+    @Enumerated(value=EnumType.STRING)
     private providers provider=providers.SELF;
     private String providerUserId;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
