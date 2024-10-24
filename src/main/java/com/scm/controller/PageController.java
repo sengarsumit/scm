@@ -1,6 +1,8 @@
 package com.scm.controller;
 import com.scm.entities.User;
 import com.scm.forms.UserForm;
+import com.scm.helper.Message;
+import com.scm.helper.MessageType;
 import com.scm.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +71,10 @@ public class PageController {
 
         userService.saveUser(user);
         System.out.println("user saved");
-        session.setAttribute("message","Registration successful");
+        Message message=Message.builder().content("Registration sucessful").type(MessageType.green).build();
+        session.setAttribute("message",message);
+
+
         return "redirect:register";
     }
 
