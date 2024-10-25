@@ -5,10 +5,12 @@ import com.scm.helper.Message;
 import com.scm.helper.MessageType;
 import com.scm.services.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -50,6 +52,7 @@ public class PageController {
     @GetMapping("/register")
     public String register(Model model)
     {
+
         UserForm userForm = new UserForm();
         model.addAttribute("userForm", userForm);
         return "register";
@@ -57,9 +60,13 @@ public class PageController {
 
     //register
     @RequestMapping(value = "/do-register",method = RequestMethod.POST)
-    public String processRegister(@ModelAttribute UserForm userForm, HttpSession session)
-    {
+    public String processRegister(@Valid @ModelAttribute UserForm userForm, BindingResult rBindingResult ,HttpSession session)
 
+    {
+        if(rBindingResult.hasErrors())
+        {
+            return "register";
+        }
 //        User user=User.builder().name(userForm.getName()).email(userForm.getEmail()).password(userForm.getPassword()).about(userForm.getAbout()).phoneNumber(userForm.getPhoneNumber()).profilePic("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png").build();
         User user=new User();
         user.setName(userForm.getName());
